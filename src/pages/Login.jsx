@@ -20,12 +20,12 @@ export default function Login() {
     };
 
     return (
-        <div style={{ backgroundColor: "#F5F0E8", minHeight: "100vh" }} 
+        <div style={{ backgroundColor: "#F5F0E8", minHeight: "20vh" }} 
         className="flex items-center justify-center w-screen h-screen px-1">
             <div className="bg-white rounded-2xl shadow-lg p-12 w-full max-w-md">
 
                 {/* Logo */}
-                <div className="text-center mb-5">
+                <div className="text-center mb-2">
                     <h1 style={{ color: "#E8652A" }} className="text-3xl font-bold">
                         El Buen Sazon
                     </h1>
@@ -34,7 +34,7 @@ export default function Login() {
                     </p>
                 </div>
 
-                <h2 className="text-2xl font-semibold text-gray-700 mb-2 text-center">
+                <h2 className="text-2xl font-semibold text-gray-700 mb-4 text-center">
                     Iniciar Sesión
                 </h2>
 
@@ -56,7 +56,7 @@ export default function Login() {
                 </div>
 
                 {/* Password */}
-                <div className="mb-2">
+                <div className="mb-4">
                 <label className="block text-gray-600 mb-1 text-sm">
                     Contraseña
                 </label>
@@ -82,7 +82,7 @@ export default function Login() {
                 </button>
 
                 {/* Registro */}
-                <p className="text-center text-sm text-gray-500 mt-4">
+                <p className="text-center text-sm text-gray-500 mt-6">
                     ¿No tienes cuenta?{" "}
                     <span
                         style={{ color: "#E8652A" }}
@@ -93,18 +93,18 @@ export default function Login() {
                 </p>
 
                 {/* Divisor */}
-                <div className="flex items-center my-4">
+                <div className="flex items-center my-5">
                 <hr className="flex-grow border-gray-300" />
                 <span className="mx-3 text-gray-400 text-sm">o continúa con</span>
                 <hr className="flex-grow border-gray-300" />
                 </div>
 
                 {/* Botones sociales */}
-                <div className="flex justify-center gap-4">
+                <div className="flex justify-center gap-5">
                 <button
                     onClick={() => console.log("Google login")}
                     className="w-15 h-10 rounded-full border border-gray-200 flex items-center justify-center shadow-sm hover:shadow-md transition hover:scale-105"
-                    style={{ backgroundColor: "white" }}
+                    style={{ backgroundColor: "#d5dde7" }}
                 >
                     <FcGoogle size={20} />
                 </button>
