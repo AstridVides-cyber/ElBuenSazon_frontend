@@ -1,135 +1,217 @@
-import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook, FaLock, FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { MdEmail } from "react-icons/md";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa";
+import { COLORS } from "../theme/colors";
+import { validateLogin } from "../validators/authValidators";
+import useForm from "../hooks/useForm";
+
+function FloatingInput({ label, name, value, onChange, tipo = "text", error }) {
+  return (
+    <div className="relative mb-6">
+      <input
+        type={tipo}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder=" "
+        autoComplete="off"
+        className="peer w-full border-b-2 bg-transparent pt-5 pb-2 text-sm focus:outline-none transition-all"
+        style={{
+          borderColor: error ? COLORS.error : COLORS.inputBorder,
+          color: COLORS.dark,
+        }}
+      />
+      <label
+        className="absolute left-0 top-4 text-sm transition-all duration-200 
+          peer-placeholder-shown:top-4 
+          peer-placeholder-shown:text-sm 
+          peer-focus:-top-1 peer-focus:text-xs 
+          peer-[&:not(:placeholder-shown)]:-top-1 
+          peer-[&:not(:placeholder-shown)]:text-xs"
+        style={{ color: value ? COLORS.primary : COLORS.labelActive }}>
+        {label}
+      </label>
+      {error && (
+        <p className="text-xs mt-1" style={{ color: COLORS.error }}>{error}</p>
+      )}
+    </div>
+  );
+}
 
 export default function Login() {
-    const [form, setForm] = useState({
-        email: "",
-        password: "",
-    });
-    const [errors, setErrors] = useState({});
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { form, errors, setErrors, handleChange } = useForm({
+    email: "",
+    password: "",
+  });
 
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-        setErrors({ ...errors, [e.target.name]: "" });
-    };
+  const handleSubmit = () => {
+    const newErrors = validateLogin(form);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    console.log("Login:", form);
+  };
 
-    const validate = () => {
-        const newErrors = {};
-        if (!form.email.trim())
-        newErrors.email = "El correo es obligatorio";
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-        newErrors.email = "El correo no es válido";
-        if (!form.password)
-        newErrors.password = "La contraseña es obligatoria";
-        else if (form.password.length < 6)
-        newErrors.password = "Mínimo 6 caracteres";
-        return newErrors;
-    };
+  return (
+    <div className="flex w-screen h-screen">
 
-    const handleSubmit = () => {
-        const newErrors = validate();
-        if (Object.keys(newErrors).length > 0) {
-        setErrors(newErrors);
-        return;
-        }
-        console.log("Login:", form);
-    };
+      {/* LADO IZQUIERDO - Imagen full */}
+      <div className="hidden md:block w-1/2 relative">
 
-    const inputClass = (field) =>
-        `w-full border rounded-lg pl-8 pr-4 py-3 text-sm text-gray-800 focus:outline-none ${
-        errors[field] ? "border-red-400" : "border-gray-300 focus:border-orange-400"
-    }`;
-
-    return (
-        <div style={{ backgroundColor: "#F5F0E8" }}
-            className="flex items-center justify-center w-screen h-screen px-1"
-        >
-            <div className="bg-white rounded-2xl shadow-lg p-10 w-full max-w-md">
-
-                {/* Logo */}
-                <div className="text-center mb-2">
-                    <h1 style={{ color: "#E8652A" }} className="text-3xl font-bold">
-                        El Buen Sazon
-                    </h1>
-                    <p style={{ color: "#8B5E3C" }} className="text-sm mt-1">
-                        DESAYUNOS • ALMUERZOS • DELIVERY
-                    </p>
-                </div>
-
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4 text-center">
-                    Iniciar Sesión
-                </h2>
-
-                {/* Email */}
-                <div className="mb-4">
-                    <label className="block text-gray-600 mb-1 text-sm">Correo electrónico</label>
-                    <div className="relative">
-                        <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={15} />
-                        <input
-                        type="email" name="email" value={form.email} onChange={handleChange}
-                        placeholder="tu@email.com" autoComplete="off"
-                        className={inputClass("email")} style={{ backgroundColor: "white" }}
-                        />
-                    </div>
-                    {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-                </div>
-
-                {/* Password */}
-                <div className="mb-5">
-                    <label className="block text-gray-600 mb-1 text-sm">Contraseña</label>
-                    <div className="relative">
-                        <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={13} />
-                        <input
-                        type="password" name="password" value={form.password} onChange={handleChange}
-                        placeholder="••••••••" autoComplete="new-password"
-                        className={inputClass("password")} style={{ backgroundColor: "white" }}
-                        />
-                    </div>
-                    {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
-                </div>
-
-                {/* Botón */}
-                <button onClick={handleSubmit} style={{ backgroundColor: "#E8652A" }}
-                    className="w-full text-white py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition flex items-center justify-center gap-2">
-                    <FaUser size={14} />
-                    Ingresar
-                </button>
-
-                {/* Registro */}
-                <p className="text-center text-sm text-gray-500 mt-6">
-                    ¿No tienes cuenta?{" "}
-                    <span style={{ color: "#E8652A" }}
-                        className="cursor-pointer font-semibold hover:underline"
-                        onClick={() => navigate("/register")}>
-                        Regístrate
-                    </span>
-                </p>
-
-                {/* Divisor */}
-                <div className="flex items-center my-5">
-                    <hr className="flex-grow border-gray-300" />
-                    <span className="mx-3 text-gray-400 text-sm">o continúa con</span>
-                    <hr className="flex-grow border-gray-300" />
-                </div>
-
-                {/* Botones sociales */}
-                <div className="flex justify-center gap-5">
-                    <button onClick={() => console.log("Google login")}
-                        className="w-15 h-10 rounded-full border border-gray-200 flex items-center justify-center shadow-sm hover:shadow-md transition hover:scale-105"
-                        style={{ backgroundColor: "#d5dde7" }}>
-                        <FcGoogle size={20} />
-                    </button>
-                    <button onClick={() => console.log("Facebook login")}
-                        className="w-15 h-10 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition hover:scale-105"
-                        style={{ backgroundColor: "#1877F2" }}>
-                        <FaFacebook size={20} color="white" />
-                    </button>
-                </div>
-            </div>
+        {/* Imagen de fondo */}
+        <div className="absolute inset-0"
+          style={{
+            background: `url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800') center/cover`
+          }}>
         </div>
-    );
-};
+
+        {/* Overlay degradado */}
+        <div className="absolute inset-0"
+          style={{
+            background: `linear-gradient(to top, 
+            ${COLORS.overlayDark} 0%, 
+            ${COLORS.overlayMid} 50%, 
+            ${COLORS.overlayLight} 100%)`
+          }}>
+        </div>
+
+        {/* Logo arriba */}
+        <div className="absolute top-8 left-8 z-10">
+          <h1 className="text-2xl font-bold" style={{ color: COLORS.white }}>
+            El Buen Sazon
+          </h1>
+          <p className="text-xs opacity-70" style={{ color: COLORS.white }}>
+            DESAYUNOS • ALMUERZOS • DELIVERY
+          </p>
+        </div>
+
+        {/* Texto abajo */}
+        <div className="absolute bottom-10 left-8 right-8 z-10">
+          <h2 className="text-3xl font-bold mb-2" style={{ color: COLORS.white }}>
+            Sabor auténtico<br />en cada plato
+          </h2>
+          <p className="text-sm opacity-75 max-w-xs" style={{ color: COLORS.white }}>
+            Los mejores desayunos y almuerzos preparados con amor y los ingredientes más frescos.
+          </p>
+          <div className="flex gap-2 mt-6">
+            <div className="w-6 h-1 rounded-full" style={{ backgroundColor: COLORS.secondary }}></div>
+            <div className="w-2 h-1 rounded-full opacity-40" style={{ backgroundColor: COLORS.white }}></div>
+            <div className="w-2 h-1 rounded-full opacity-40" style={{ backgroundColor: COLORS.white }}></div>
+          </div>
+        </div>
+      </div>
+
+      {/* LADO DERECHO - Formulario */}
+      <div className="flex w-full md:w-1/2 flex-col justify-between px-10 py-8"
+        style={{ backgroundColor: COLORS.formBg }}>
+
+        {/* Header top */}
+        <div className="flex items-center justify-between">
+          <div className="md:hidden">
+            <h1 className="text-xl font-bold" style={{ color: COLORS.primary }}>
+              El Buen Sazon
+            </h1>
+          </div>
+          <div className="md:flex hidden"></div>
+          <button
+            onClick={() => navigate("/register")}
+            className="text-sm font-semibold px-4 py-2 rounded-lg border hover:opacity-80 transition"
+            style={{
+              borderColor: COLORS.dark,
+              color: COLORS.dark,
+              backgroundColor: "transparent"
+            }}>
+            Regístrate
+          </button>
+        </div>
+
+        {/* Formulario centrado */}
+        <div className="w-full mx-auto" style={{ maxWidth: "420px" }}>
+
+          <h2 className="text-3xl font-bold mb-1" style={{ color: COLORS.dark }}>
+            ¡Bienvenido de nuevo!
+          </h2>
+          <p className="text-sm mb-10" style={{ color: COLORS.placeholder }}>
+            Inicia sesión en tu cuenta
+          </p>
+
+          {/* Inputs flotantes */}
+          <FloatingInput
+            label="Correo electrónico"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            tipo="email"
+            error={errors.email}
+          />
+          <FloatingInput
+            label="Contraseña"
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+            tipo="password"
+            error={errors.password}
+          />
+
+          {/* Olvidé contraseña */}
+          <div className="text-right mb-8">
+            <span className="text-xs cursor-pointer hover:underline"
+              style={{ color: COLORS.placeholder }}>
+              ¿Olvidaste tu contraseña?
+            </span>
+          </div>
+
+          {/* Botón principal */}
+          <button
+            onClick={handleSubmit}
+            className="w-full py-3 rounded-xl font-semibold hover:opacity-90 transition mb-6"
+            style={{
+              backgroundColor: COLORS.primary,
+              color: COLORS.white,
+              boxShadow: `0 4px 15px rgba(210,39,1,0.3)`
+            }}>
+            Ingresar
+          </button>
+
+          {/* Divisor */}
+          <div className="flex items-center mb-6">
+            <hr className="flex-grow" style={{ borderColor: COLORS.inputFocus }} />
+            <span className="mx-3 text-xs" style={{ color: COLORS.placeholder }}>
+              o inicia con
+            </span>
+            <hr className="flex-grow" style={{ borderColor: COLORS.inputFocus }} />
+          </div>
+
+          {/* Botones sociales */}
+          <div className="flex gap-3">
+            <button onClick={() => console.log("Google")}
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium border hover:bg-gray-50 transition"
+              style={{
+                backgroundColor: COLORS.white,
+                color: COLORS.dark,
+                borderColor: COLORS.inputFocus
+              }}>
+              <FcGoogle size={18} /> Google
+            </button>
+            <button onClick={() => console.log("Facebook")}
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium hover:opacity-90 transition"
+              style={{
+                backgroundColor: COLORS.facebook,
+                color: COLORS.white
+              }}>
+              <FaFacebook size={18} /> Facebook
+            </button>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <p className="text-center text-xs" style={{ color: COLORS.placeholder }}>
+          © 2026 El Buen Sazon. Todos los derechos reservados.
+        </p>
+
+      </div>
+    </div>
+  );
+}
