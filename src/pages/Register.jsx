@@ -1,0 +1,231 @@
+import { useNavigate } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa";
+import { COLORS } from "../theme/colors";
+import { validateRegister } from "../validators/authValidators";
+import useForm from "../hooks/useForm";
+
+function FloatingInput({ label, name, value, onChange, tipo = "text", error }) {
+  return (
+    <div className="relative mb-1">
+      <input
+        id={name}
+        type={tipo}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder=" "
+        autoComplete="off"
+        className="peer w-full border-b-2 bg-transparent pt-5 pb-2 text-sm focus:outline-none transition-all"
+        style={{
+          borderColor: error ? COLORS.error : COLORS.inputBorder,
+          color: COLORS.dark,
+        }}
+      />
+      <label
+        htmlFor={name}
+        className="absolute left-0 top-4 text-sm transition-all duration-200 cursor-text 
+            peer-placeholder-shown:top-4 
+            peer-placeholder-shown:text-sm 
+            peer-focus:-top-1 
+            peer-focus:text-xs 
+            peer-[&:not(:placeholder-shown)]:-top-1 
+            peer-[&:not(:placeholder-shown)]:text-xs"
+        style={{ color: value ? COLORS.primary : COLORS.labelActive }}>
+        {label}
+      </label>
+      {error && (
+        <p className="text-xs mt-1" style={{ color: COLORS.error }}>{error}</p>
+      )}
+    </div>
+  );
+}
+
+export default function Register() {
+  const navigate = useNavigate();
+  const { form, errors, setErrors, handleChange, resetForm } = useForm({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleSubmit = () => {
+    const newErrors = validateRegister(form);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    console.log("Register:", form);
+    resetForm();
+    alert("¡Cuenta creada exitosamente!");
+  };
+
+  return (
+    <div className="flex w-screen h-screen">
+
+      {/* Imagen full */}
+      <div className="hidden md:block w-1/2 relative">
+
+        {/* Imagen de fondo */}
+        <div className="absolute inset-0"
+          style={{
+            background: `url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800') center/cover`
+          }}>
+        </div>
+
+        {/* Overlay degradado */}
+        <div className="absolute inset-0"
+          style={{
+            background: `linear-gradient(to top, 
+            ${COLORS.overlayDark} 0%, 
+            ${COLORS.overlayMid} 50%, 
+            ${COLORS.overlayLight} 100%)`
+          }}>
+        </div>
+
+        {/* Logo */}
+        <div className="absolute top-8 left-8 z-10">
+          <h1 className="text-2xl font-bold" style={{ color: COLORS.white }}>
+            El Buen Sazon
+          </h1>
+          <p className="text-xs opacity-70" style={{ color: COLORS.white }}>
+            DESAYUNOS • ALMUERZOS • DELIVERY
+          </p>
+        </div>
+
+        {/* Texto abajo */}
+        <div className="absolute bottom-10 left-8 right-8 z-10">
+          <h2 className="text-3xl font-bold mb-2" style={{ color: COLORS.white }}>
+            Únete a nuestra<br />familia foodie 🍽️
+          </h2>
+          <p className="text-sm opacity-75 max-w-xs" style={{ color: COLORS.white }}>
+            Crea tu cuenta y disfruta de nuestros platillos favoritos con delivery a tu puerta.
+          </p>
+          <div className="flex gap-2 mt-6">
+            <div className="w-2 h-1 rounded-full opacity-40" style={{ backgroundColor: COLORS.white }}></div>
+            <div className="w-6 h-1 rounded-full" style={{ backgroundColor: COLORS.secondary }}></div>
+            <div className="w-2 h-1 rounded-full opacity-40" style={{ backgroundColor: COLORS.white }}></div>
+          </div>
+        </div>
+      </div>
+
+      {/* LADO DERECHO - Formulario */}
+      <div className="flex w-full md:w-1/2 flex-col justify-between px-10 py-8"
+        style={{ backgroundColor: COLORS.formBg }}>
+
+        {/* Header top */}
+        <div className="flex items-center justify-between">
+          <div className="md:hidden">
+            <h1 className="text-xl font-bold" style={{ color: COLORS.primary }}>
+              El Buen Sazon
+            </h1>
+          </div>
+          <div className="md:flex hidden"></div>
+          <button
+            onClick={() => navigate("/login")}
+            className="text-sm font-semibold px-4 py-1 rounded-lg border hover:opacity-80 transition"
+            style={{
+              borderColor: COLORS.dark,
+              color: COLORS.dark,
+              backgroundColor: "transparent"
+            }}>
+            Inicia Sesión
+          </button>
+        </div>
+
+        {/* Formulario centrado */}
+        <div className="w-full mx-auto" style={{ maxWidth: "440px" }}>
+
+          <h2 className="text-3xl font-bold mb-1" style={{ color: COLORS.dark }}>
+            Crear cuenta
+          </h2>
+          <p className="text-sm mb-1" style={{ color: COLORS.placeholder }}>
+            Regístrate para comenzar
+          </p>
+
+          {/* Inputs flotantes */}
+          <FloatingInput
+            label="Nombre completo"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            error={errors.name}
+          />
+          <FloatingInput
+            label="Correo electrónico"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            tipo="email"
+            error={errors.email}
+          />
+          <FloatingInput
+            label="Contraseña"
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+            tipo="password"
+            error={errors.password}
+          />
+          <FloatingInput
+            label="Confirmar contraseña"
+            name="confirmPassword"
+            value={form.confirmPassword}
+            onChange={handleChange}
+            tipo="password"
+            error={errors.confirmPassword}
+          />
+
+          {/* Botón principal */}
+          <button
+            onClick={handleSubmit}
+            className="w-full py-1 rounded-xl font-semibold hover:opacity-90 transition mb-6 mt-2"
+            style={{
+              backgroundColor: COLORS.primary,
+              color: COLORS.white,
+              boxShadow: `0 4px 15px rgba(210,39,1,0.3)`
+            }}>
+            Crear Cuenta
+          </button>
+
+          {/* Divisor */}
+          <div className="flex items-center mb-6">
+            <hr className="flex-grow" style={{ borderColor: COLORS.inputFocus }} />
+            <span className="mx-3 text-xs" style={{ color: COLORS.placeholder }}>
+              o regístrate con
+            </span>
+            <hr className="flex-grow" style={{ borderColor: COLORS.inputFocus }} />
+          </div>
+
+          {/* Botones sociales */}
+          <div className="flex gap-3">
+            <button onClick={() => console.log("Google")}
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium border hover:bg-gray-50 transition"
+              style={{
+                backgroundColor: COLORS.white,
+                color: COLORS.dark,
+                borderColor: COLORS.inputFocus
+              }}>
+              <FcGoogle size={18} /> Google
+            </button>
+            <button onClick={() => console.log("Facebook")}
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium hover:opacity-90 transition"
+              style={{
+                backgroundColor: COLORS.facebook,
+                color: COLORS.white
+              }}>
+              <FaFacebook size={18} /> Facebook
+            </button>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <p className="text-center text-xs" style={{ color: COLORS.placeholder }}>
+          © 2026 El Buen Sazon. Todos los derechos reservados.
+        </p>
+
+      </div>
+    </div>
+  );
+}
