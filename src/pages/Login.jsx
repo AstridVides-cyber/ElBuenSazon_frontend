@@ -7,7 +7,7 @@ import useForm from "../hooks/useForm";
 
 function FloatingInput({ label, name, value, onChange, tipo = "text", error }) {
   return (
-    <div className="relative mb-6">
+    <div className="relative mb-3">
       <input
         type={tipo}
         name={name}
