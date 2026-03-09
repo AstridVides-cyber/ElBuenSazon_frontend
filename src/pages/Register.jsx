@@ -4,42 +4,7 @@ import { FaFacebook } from "react-icons/fa";
 import { COLORS } from "../theme/colors";
 import { validateRegister } from "../validators/authValidators";
 import useForm from "../hooks/useForm";
-
-function FloatingInput({ label, name, value, onChange, tipo = "text", error }) {
-  return (
-    <div className="relative mb-1">
-      <input
-        id={name}
-        type={tipo}
-        name={name}
-        value={value}
-        onChange={onChange}
-        placeholder=" "
-        autoComplete="off"
-        className="peer w-full border-b-2 bg-transparent pt-5 pb-2 text-sm focus:outline-none transition-all"
-        style={{
-          borderColor: error ? COLORS.error : COLORS.inputBorder,
-          color: COLORS.dark,
-        }}
-      />
-      <label
-        htmlFor={name}
-        className="absolute left-0 top-4 text-sm transition-all duration-200 cursor-text 
-            peer-placeholder-shown:top-4 
-            peer-placeholder-shown:text-sm 
-            peer-focus:-top-1 
-            peer-focus:text-xs 
-            peer-[&:not(:placeholder-shown)]:-top-1 
-            peer-[&:not(:placeholder-shown)]:text-xs"
-        style={{ color: value ? COLORS.primary : COLORS.labelActive }}>
-        {label}
-      </label>
-      {error && (
-        <p className="text-xs mt-1" style={{ color: COLORS.error }}>{error}</p>
-      )}
-    </div>
-  );
-}
+import FloatingInput from "../components/FloatingInput";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -111,7 +76,7 @@ export default function Register() {
       </div>
 
       {/* LADO DERECHO - Formulario */}
-      <div className="flex w-full md:w-1/2 flex-col justify-between px-10 py-8"
+      <div className="flex w-full md:w-1/2 flex-col justify-between px-10 py-4 overflow-hidden"
         style={{ backgroundColor: COLORS.formBg }}>
 
         {/* Header top */}
@@ -180,7 +145,7 @@ export default function Register() {
           {/* Botón principal */}
           <button
             onClick={handleSubmit}
-            className="w-full py-8 rounded-xl font-semibold hover:opacity-90 transition mb-6 mt-5.5"
+            className="w-full py-1 rounded-xl font-semibold hover:opacity-90 transition mb-4 mt-4"
             style={{
               backgroundColor: COLORS.primary,
               color: COLORS.white,

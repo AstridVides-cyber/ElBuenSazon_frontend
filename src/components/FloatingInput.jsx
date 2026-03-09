@@ -9,7 +9,7 @@ export default function FloatingInput({
   error = "" 
 }) {
   return (
-    <div className="relative mb-4">
+    <div className="relative mb-2">
       <input
         id={name}
         type={tipo}
