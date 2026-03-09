@@ -140,7 +140,7 @@ export default function Register() {
           <h2 className="text-3xl font-bold mb-1" style={{ color: COLORS.dark }}>
             Crear cuenta
           </h2>
-          <p className="text-sm mb-1" style={{ color: COLORS.placeholder }}>
+          <p className="text-sm mb-3.5" style={{ color: COLORS.placeholder }}>
             Regístrate para comenzar
           </p>
 
@@ -180,7 +180,7 @@ export default function Register() {
           {/* Botón principal */}
           <button
             onClick={handleSubmit}
-            className="w-full py-1 rounded-xl font-semibold hover:opacity-90 transition mb-6 mt-2"
+            className="w-full py-8 rounded-xl font-semibold hover:opacity-90 transition mb-6 mt-5.5"
             style={{
               backgroundColor: COLORS.primary,
               color: COLORS.white,

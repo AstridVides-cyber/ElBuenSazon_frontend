@@ -101,7 +101,7 @@ export default function Login() {
           <h2 className="text-3xl font-bold mb-1" style={{ color: COLORS.dark }}>
             ¡Bienvenido de nuevo!
           </h2>
-          <p className="text-sm mb-10" style={{ color: COLORS.placeholder }}>
+          <p className="text-sm mb-4" style={{ color: COLORS.placeholder }}>
             Inicia sesión en tu cuenta
           </p>
 
@@ -124,7 +124,7 @@ export default function Login() {
           />
 
           {/* Olvidé contraseña */}
-          <div className="text-right mb-8">
+          <div className="text-right mb-4">
             <span className="text-xs cursor-pointer hover:underline"
               style={{ color: COLORS.placeholder }}>
               ¿Olvidaste tu contraseña?
@@ -134,7 +134,7 @@ export default function Login() {
           {/* Botón principal */}
           <button
             onClick={handleSubmit}
-            className="w-full py-3 rounded-xl font-semibold hover:opacity-90 transition mb-6"
+            className="w-full py-3 rounded-xl font-semibold hover:opacity-90 transition mb-5"
             style={{
               backgroundColor: COLORS.primary,
               color: COLORS.white,
